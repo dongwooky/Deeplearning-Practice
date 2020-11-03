@@ -32,6 +32,7 @@ def train_step(model, inputs, labels, loss_object, optimizer, train_loss, train_
     optimizer.apply_gradients(zip(gradients,model.trainable_variables))
     train_loss(loss)
     train_metric(labels,predictions)
+
 #%%5
 #데이터셋 생성, 전처리
 np.random.seed(0)
