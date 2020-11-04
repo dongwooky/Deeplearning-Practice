@@ -47,14 +47,15 @@ for label, center_pt in enumerate(center_pts):
 pts=np.stack(pts, axis=0).astype(np.float32)
 labels=np.stack(labels,axis=0)
         
-
+train_ds=tf.data.Dataset.from_tensor_slices((pts,labels)).shuffle(1000).batch(32)
 #%%6
 #모델 생성
-
+model=MyModel()
 #%%7
 #손실 함수 및 최적화 알고리즘 설정
 #CrossEntropy, Adam Optimizer
-
+loss_object=tf.keras.losses.SparseCategoricalCrossentropy()
+optimizer=tf.keras.optimizers.Adam()
 #%%8
 #평가 지표 설정
 #Accuracy
