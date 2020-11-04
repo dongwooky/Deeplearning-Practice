@@ -59,9 +59,29 @@ optimizer=tf.keras.optimizers.Adam()
 #%%8
 #평가 지표 설정
 #Accuracy
-
+train_loss=tf.keras.metrics.Mean('name=train_loss')
+train_accuracy=tf.keras.SparseCategoricalAccuracy('name=train_accuracy')
 #%%
 #학습 루프
+for epoch in range(EPOCHS):
+    for x, labels in train_ds:
+        train_step(model, x, labels, loss_object, optimizer, train_loss, train_accuracy)
 
+    template='Epoch: {}, Loss: {}, Accuracy: {}'
+    print(template.format(Epoch+1,
+                          train_loss.result(),
+                          train_accuracy.result()*100))
 #%%
 #데이터셋 및 학습 파라미터 저장
+np.savez_comressed('ch2_dataset.npz', inputs=pts, labels=labels)
+
+W_h, b_h=model.d1.get_weights()
+W_o, b_o=model.d2.get_weights()
+W_h=np.transpose(W_h)
+W_o=np.transpose(W_o)
+
+np.savez_compressed('ch2_parameters.npz', 
+                    W_h=W_h,
+                    b_h=b_h,
+                    W_o=W_o,
+                    b_o=b_o)
