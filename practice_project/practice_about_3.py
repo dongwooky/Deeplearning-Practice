@@ -33,7 +33,17 @@ def train_step(model, inputs, labels, loss_object, optimizer, train_loss, train_
 
 #%%5
 #데이터셋 생성, 전처리
+np.random.seed(0)
 
+pts=list()
+labels=list()
+
+center_pts=np.random.uniform(-8.0,8.0,(10,2))
+for label, center_pt in enumerate(center_pts):
+    for _ in range(100):
+        pts.append(center_pt+np.random.randn(*center_pt.shape))
+        labels.append(label)
+        
 #%%6
 #모델 생성
 
