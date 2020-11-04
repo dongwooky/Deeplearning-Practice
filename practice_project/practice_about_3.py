@@ -43,7 +43,11 @@ for label, center_pt in enumerate(center_pts):
     for _ in range(100):
         pts.append(center_pt+np.random.randn(*center_pt.shape))
         labels.append(label)
+
+pts=np.stack(pts, axis=0).astype(np.float32)
+labels=np.stack(labels,axis=0)
         
+
 #%%6
 #모델 생성
 
