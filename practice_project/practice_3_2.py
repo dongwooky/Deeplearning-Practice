@@ -24,7 +24,16 @@ class MyModel(tf.keras.Model):
 #%%4
 #학습 루프 정의
 @tf.function
+def train_step(model, inputs, labels, loss_object, optimizer, train_loss, train_metric):
+    with tf.GradientTape() as tape:
+        predictions=model(inputs)
+        loss=loss_object(labels, predictions)
+    gradients=tape.gradient(loss, model.trainable_variables)
 
+    optimizer.apply_gradients(zip(gradients, model.trainable_variables))
+    train_loss(loss)
+    train_metric(labels, predictions)
+    
 #%%5
 #데이터셋 생성, 전처리
 
