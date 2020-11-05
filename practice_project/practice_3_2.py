@@ -14,12 +14,12 @@ EPOCHS=1000
 class MyModel(tf.keras.Model):
     def __init__(self):
         super(MyModel, self).__init__()
-        self.dense1=tf.keras.layers.Dense(128, input_dim=2, activation='sigmoid')
-        self.dense2=tf.keras.layers.Dense(10, activation='softmax')
+        self.d1=tf.keras.layers.Dense(128, input_dim=2, activation='sigmoid')
+        self.d2=tf.keras.layers.Dense(10, activation='softmax')
 
     def __call__(self, inputs, training=None, mask=None):
-        x=self.dense1(inputs)
-        return self.dense2(x)
+        x=self.d1(inputs)
+        return self.d2(x)
 
 #%%4
 #학습 루프 정의
@@ -53,17 +53,39 @@ labels=np.stack(labels, axis=0)
 train_ds=tf.data.Dataset.from_tensor_slices((pts, labels)).shuffle(1000).batch(32)
 #%%6
 #모델 생성
-
+model=MyModel()
 #%%7
 #손실 함수 및 최적화 알고리즘 설정
 #CrossEntropy, Adam Optimizer
+loss_object=tf.keras.losses.SparseCategoricalCrossentropy()
+optimizer=tf.keras.optimizers.Adam()
 
 #%%8
 #평가 지표 설정
 #Accuracy
+train_loss=tf.keras.metrics.Mean(name='train_loss')
+train_accuracy=tf.keras.metrics.SparseCategoricalAccuracy(name='train_accuracy')
 
 #%%
 #학습 루프
+for epoch in range(EPOCHS):
+    for x, label in train_ds:
+        train_step(model, x, label, loss_object, optimizer, train_loss, train_accuracy)
 
+    template='Epoch {}, Loss: {}, Accuracy: {}'
+    print(template.format(epoch+1,
+                          train_loss.result(),
+                          train_accuracy.result()*100))
 #%%
 #데이터셋 및 학습 파라미터 저장
+np.savez_compressed('ch2_dataset.npz',inputs=pts, labels=labels)
+
+W_h, b_h=model.d1.get_weights()
+W_o, b_o=model.d2.get_weights()
+W_h=np.transpose(W_h)
+W_o=np.transpose(W_o)
+np.savez_compressed('ch2_parameters.npz',
+                    W_h=W_h,
+                    b_h=b_h,
+                    W_o=W_o,
+                    b_o=b_o)
