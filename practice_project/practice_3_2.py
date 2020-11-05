@@ -50,7 +50,7 @@ for label,center_pt in enumerate(center_pts):
 pts=np.stack(pts, axis=0).astype(np.flaot32)
 labels=np.stack(labels, axis=0)
 
-
+train_ds=tf.data.Dataset.from_tensor_slices((pts, labels)).shuffle(1000).batch(32)
 #%%6
 #모델 생성
 
