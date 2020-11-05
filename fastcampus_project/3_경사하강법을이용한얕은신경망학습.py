@@ -85,4 +85,3 @@ np.savez_compressed('ch2_parameters.npz',
                     b_h=b_h,
                     W_o=W_o,
                     b_o=b_o)
-                    
