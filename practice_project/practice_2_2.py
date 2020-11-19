@@ -31,15 +31,21 @@ class ShallowNN:
 #%%5
 #데이터셋 가져오기, 정리하기
 #Import and organize dataset
-
+dataset=np.load('ch2_dataset.npz')
+inputs=dataset['inputs']
+labels=dataset['labels']
 
 #%%6
 #모델 만들기
-
+model=ShallowNN(2, 128, 10)
 
 #%%7
 #사전에 학습된 파라미터 불러오기
-
+weights=np.load('ch2_parameters.npz')
+W_h=weights['W_h']
+b_h=weights['b_h']
+W_o=weights['W_o']
+b_o=weights['b_o']
 
 #%%8
 #모델 구동 및 결과 프린트
