@@ -29,7 +29,7 @@ def train_step(model, inputs, labels, loss_object, optimizer, train_loss, train_
         loss=loss_object(labels,predictions)
     gradients=tape.gradient(loss,model.trainable_variables)
     
-    optimizer.apply_gradients(zip(gradients,model.trainable_variables))
+    optimizer.apply_gradient(zip(gradients,model.trainable_variables))
     train_loss(loss)
     train_metric(labels,predictions)
 
@@ -60,8 +60,8 @@ optimizer=tf.keras.optimizers.Adam()
 #%%8
 #평가 지표 설정
 #Accuracy
-train_loss=tf.keras.metrics.Mean(name='train_loss')
-train_accuracy=tf.keras.metrics.SparseCategoricalAccuracy(name='train_accuracy')
+train_loss=tf.keras.metric.Mean(name='train_loss')
+train_accuracy=tf.keras.metric.SparseCategoricalAccuracy(name='train_accuracy')
 #%%
 #학습 루프
 for epoch in range(EPOCHS):

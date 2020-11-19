@@ -20,14 +20,14 @@ def softmax(x):
 #%%4
 #네트워크 구조 정의
 class ShallowNN:
-    def __init__(self,num_input,num_hidden,num_output):
-        self.W_h=np.zeros((num_hidden,num_input),dtype=np.float32)
+    def __init__(self, num_input, num_hidden, num_output):
+        self.W_h=np.zeors((num_hidden, num_input),dtype=np.float32)
         self.b_h=np.zeros((num_hidden,),dtype=np.float32)
-        self.W_o=np.zeros((num_output,num_hidden),dtype=np.float32)
+        self.W_o=np.zeros((num_output, num_hidden),dtype=np.float32)
         self.b_o=np.zeros((num_output,),dtype=np.float32)
-    def __call__(self,x):
-        h=sigmoid(np.matmul(self.W_h,x)+self.b_h)
-        return softmax(np.matmul(self.W_o,h)+self.b_o)
+    def __call__(self, x):
+        h=sigmoid(np.matmul(self.W_h, x)+self.b_h)
+        return softmax(np.matmul(self.W_o, h)+self.b_o)
 
 #%%5
 #데이터셋 가져오기, 정리하기
@@ -38,7 +38,8 @@ labels=dataset['labels']
 
 #%%6
 #모델 만들기
-model = ShallowNN(2, 128, 10)
+model=ShallowNN(2, 128, 10)
+
 #%%7
 #사전에 학습된 파라미터 불러오기
 weights=np.load('ch2_parameters.npz')
@@ -51,7 +52,7 @@ model.b_o=weights['b_o']
 #모델 구동 및 결과 프린트
 outputs=list()
 for pt, label in zip(inputs, labels):
-    output = model(pt)
+    output =model(pt)
     outputs.append(np.argmax(output))
     print(np.argmax(output), label)
 outputs=np.stack(outputs, axis=0)
@@ -60,16 +61,16 @@ outputs=np.stack(outputs, axis=0)
 #정답 클래스 스캐터 플랏
 plt.figure()
 for idx in range(10):
-    mask= labels ==idx
-    plt.scatter(inputs[mask, 0], inputs[mask,1])
+    mask= labels==idx
+    plt.scatter(inputs[mask, 0], inputs[mask, 1])
 plt.title('true_label')
 plt.show()
 
 # %%
+#출력 클래스 스캐터 플랏
 plt.figure()
 for idx in range(10):
-    mask= outputs ==idx
-    plt.scatter(inputs[mask, 0], inputs[mask,1])
+    mask = outputs ==idx
+    plt.scatter(inputs[mask, 0], inputs[mask, 1])
 plt.title('model_output')
 plt.show()
-# %%
