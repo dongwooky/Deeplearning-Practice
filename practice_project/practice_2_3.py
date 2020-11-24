@@ -6,13 +6,11 @@ import matplotlib.pyplot as plt
 #%%2
 # 함수구현
 #sigmoid 함수
-
 def sigmoid(x):
     return 1/(1+np.exp(-x))
 
 #%%3
 #softmax
-
 def softmax(x):
     e_x=np.exp(x)
     return e_x/np.sum(e_x)
@@ -25,9 +23,11 @@ class ShallowNN:
         self.b_h=np.zeros((num_hidden,),dtype=np.float32)
         self.W_o=np.zeros((num_output, num_hidden),dtype=np.float32)
         self.b_o=np.zeros((num_output,),dtype=np.float32)
+    
     def __call__(self, x):
         h=sigmoid(np.matmul(self.W_h, x)+self.b_h)
-        return softmax(np.matmul(self.W_o, h)+self.b_o)
+        return softmax(np.matmul(self.W_o,h)+self.b_o)
+
 
 #%%5
 #데이터셋 가져오기, 정리하기
@@ -46,31 +46,34 @@ weights=np.load('ch2_parameters.npz')
 model.W_h=weights['W_h']
 model.b_h=weights['b_h']
 model.W_o=weights['W_o']
-model.b_o=weights['b_o']
+model.b_h=weights['b_o']
+
 
 #%%8
 #모델 구동 및 결과 프린트
 outputs=list()
 for pt, label in zip(inputs, labels):
-    output =model(pt)
+    output=model(pt)
     outputs.append(np.argmax(output))
     print(np.argmax(output), label)
 outputs=np.stack(outputs, axis=0)
 
+
 #%%9
 #정답 클래스 스캐터 플랏
 plt.figure()
-for idx in range(10):
-    mask= labels==idx
-    plt.scatter(inputs[mask, 0], inputs[mask, 1])
+for idx in range(100):
+    mask=labels==idx
+    plt.scatter(inputs[mask,0], inputs[mask,1])
 plt.title('true_label')
 plt.show()
+
 
 # %%
 #출력 클래스 스캐터 플랏
 plt.figure()
-for idx in range(10):
-    mask = outputs ==idx
-    plt.scatter(inputs[mask, 0], inputs[mask, 1])
-plt.title('model_output')
+for idx in range(100):
+    mask=outputs==idx
+    plt.scatter(inputs[mask,0], inputs[mask,1])
+plt.title('true_label')
 plt.show()
